@@ -36,3 +36,6 @@ gradle-app.setting
 
 # Trash windows files
 *.bat
+
+# Vim swap files
+*.swp
