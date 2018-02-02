@@ -15,8 +15,8 @@ public class App {
         System.out.println(v.toString());
         System.out.println(q.toString());
 
-        Vector wq = v.add("v+q", v, q);
-
+        Vector wq = v.add("vxq", q);
         System.out.println(wq.toString());
+        System.out.println(v.toString());
     }
 }

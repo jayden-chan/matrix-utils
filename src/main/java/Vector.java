@@ -15,6 +15,7 @@ public class Vector {
 
     /**
      * Creates a new vector object and initializes the entires of the vector with the values provided.
+     * @param label The label for the vector.
      * @param entries The values for the entries of the vector. Variable length.
      * @throws IllegalArgumentException if no entries are provided.
      */
@@ -33,6 +34,7 @@ public class Vector {
 
     /**
      * Initializes an empty vector of size {@code size}.
+     * @param label The label for the vector.
      * @param size The size of the vector to create.
      */
     public Vector(String label, int size) {
@@ -42,7 +44,7 @@ public class Vector {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append(label);
         sb.append(": \n\n");
@@ -128,122 +130,123 @@ public class Vector {
         setRand(0, 10);
     }
 
+    /**
+     * Returns the vector's label.
+     * @return The string containing the vector's label.
+     */
+    public String getLabel() {
+        return this.label;
+    }
+
 /****************************************************************/
 /*                          Arithmetic                          */
 /****************************************************************/
 
     /**
-     * Adds two vectors of equal size.
+     * Adds a vector of equal size to this vector.
      * @param label The label for the new vector.
-     * @param a     The first vector.
-     * @param b     The second vector.
-     * @return The new vector which is the sum of {@code a} and {@code b}.
+     * @param a     The vector to add.
+     * @return The new vector.
      * @throws IllegalArgumentException if the two vectors are not equal size.
      */
-    public Vector add(String label, Vector a, Vector b) throws IllegalArgumentException {
-        if(a.getSize() != b.getSize()) {
+    public Vector add(String label, Vector a) throws IllegalArgumentException {
+        if(a.getSize() != this.getSize()) {
             throw new IllegalArgumentException("Cannot add vectors of unequal size!");
         }
 
-        Vector toReturn = new Vector(label, a.getSize());
+        Vector toReturn = new Vector(label, this.getSize());
 
         for(int i = 0; i < a.getSize(); i++) {
-            toReturn.setEntry(i, a.getEntry(i) + b.getEntry(i));
+            toReturn.setEntry(i, a.getEntry(i) + this.getEntry(i));
         }
 
         return toReturn;
     }
 
     /**
-     * Adds two vectors of equal size.
-     * @param a     The first vector.
-     * @param b     The second vector.
-     * @return The new vector which is the sum of {@code a} and {@code b}.
+     * Adds a vector of equal size to this vector.
+     * @param a     The vector to add.
+     * @return The new vector.
      * @throws IllegalArgumentException if the two vectors are not equal size.
      */
-    public Vector add(Vector a, Vector b) throws IllegalArgumentException {
-        return add("", a, b);
+    public Vector add(Vector a) throws IllegalArgumentException {
+        return add("", a);
     }
 
     /**
-     * Subtracts vector {@code b} from vector {@code a}.
-     * @param a     Vector to subtract from.
-     * @param b     Vector to subtract.
+     * Subtracts a vector from this vector.
+     * @param a     Vector to subtract.
      * @param label The label for the new vector.
-     * @return The new vector which is the difference of {@code a} and {@code b}.
+     * @return The new vector.
      * @throws IllegalArgumentException if the vectors are now equal size.
      */
-    public Vector sub(String label, Vector a, Vector b) throws IllegalArgumentException {
-        if(a.getSize() != b.getSize()) {
+    public Vector sub(String label, Vector a) throws IllegalArgumentException {
+        if(a.getSize() != this.getSize()) {
             throw new IllegalArgumentException("Cannot subtract vectors of unequal size!");
         }
-        Vector toReturn = new Vector(label, a.getSize());
+        Vector toReturn = new Vector(label, this.getSize());
 
         for(int i = 0; i < a.getSize(); i++) {
-            toReturn.setEntry(i, a.getEntry(i) - b.getEntry(i));
+            toReturn.setEntry(i, a.getEntry(i) -this.getEntry(i));
         }
 
         return toReturn;
     }
 
     /**
-     * Subtracts vector {@code b} from vector {@code a}.
-     * @param a     Vector to subtract from.
-     * @param b     Vector to subtract.
-     * @return The new vector which is the difference of {@code a} and {@code b}.
+     * Subtracts a vector from this vector.
+     * @param a     Vector to subtract.
+     * @return The new vector.
      * @throws IllegalArgumentException if the vectors are now equal size.
      */
-    public Vector sub(Vector a, Vector b) throws IllegalArgumentException {
-        return sub("", a, b);
+    public Vector sub(Vector a) throws IllegalArgumentException {
+        return sub("", a);
     }
 
     /**
-     * Computes the cross product between vectors {@code a} and {@code b}.
-     * @param a     The first vector.
-     * @param b     The second vector.
+     * Computes the cross product between this vector and another vector.
+     * @param a     The vector to cross with.
      * @param label The label for the new vector.
-     * @return The cross product A x B.
+     * @return The cross product.
      * @throws IllegalArgumentException if either vector is not in R3.
      */
-    public Vector cross(String label, Vector a, Vector b) throws IllegalArgumentException {
-        if(a.getSize() != 3 || b.getSize() != 3) {
+    public Vector cross(String label, Vector a) throws IllegalArgumentException {
+        if(a.getSize() != 3 || this.getSize() != 3) {
             throw new IllegalArgumentException("The cross product is only supported in R3.");
         }
 
-        double i = a.getEntry(1) * b.getEntry(2) - a.getEntry(2) * b.getEntry(1);
-        double j = a.getEntry(2) * b.getEntry(0) - a.getEntry(0) * b.getEntry(2);
-        double k = a.getEntry(0) * b.getEntry(1) - a.getEntry(1) * b.getEntry(0);
+        double i = a.getEntry(1) * this.getEntry(2) - a.getEntry(2) * this.getEntry(1);
+        double j = a.getEntry(2) * this.getEntry(0) - a.getEntry(0) * this.getEntry(2);
+        double k = a.getEntry(0) * this.getEntry(1) - a.getEntry(1) * this.getEntry(0);
 
         return new Vector(label, i, j, k);
     }
 
     /**
-     * Computes the cross product between vectors {@code a} and {@code b}.
-     * @param a The first vector.
-     * @param b The second vector.
-     * @return The cross product A x B.
+     * Computes the cross product between this vector and another vector.
+     * @param a     The vector to cross with.
+     * @return The cross product.
      * @throws IllegalArgumentException if either vector is not in R3.
      */
-    public Vector cross(Vector a, Vector b) throws IllegalArgumentException {
-        return cross("", a, b);
+    public Vector cross(Vector a) throws IllegalArgumentException {
+        return cross("", a);
     }
 
     /**
-     * Computes the dot product between vectors {@code a} and {@code b}.
-     * @param a The first vector.
-     * @param b The second vector.
-     * @return The dot product A * B.
+     * Computes the dot product between this vector and another vector.
+     * @param a The vector to dot with.
+     * @return The dot product.
      * @throws IllegalArgumentException if the vectors are not the same size.
      */
-    public double dot(Vector a, Vector b) throws IllegalArgumentException {
-        if(a.getSize() != b.getSize()) {
+    public double dot(Vector a) throws IllegalArgumentException {
+        if(a.getSize() != this.getSize()) {
             throw new IllegalArgumentException("Cannot take the dot product of vectors with unequal size!");
         }
 
         double sum = 0;
 
         for(int i = 0; i < a.getSize(); i++) {
-            sum += a.getEntry(i) * b.getEntry(i);
+            sum += a.getEntry(i) * this.getEntry(i);
         }
 
         return sum;
