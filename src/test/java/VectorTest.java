@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class VectorTest {
 
-    private static final double MULT_THRESH = 0.00001;
+    private static final double MULT_THRESH = 0.000001;
     private static final double ADD_THRESH = 1e-12;
 
     @Rule

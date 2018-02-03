@@ -41,6 +41,13 @@ public class Matrix {
         }
     }
 
+    /**
+     * Constructs a new matrix object with the width and height provided.
+     * @param label The label for the matrix.
+     * @param width The width of the matrix.
+     * @param height The height of the matrix.
+     * @throws IllegalArgumentException if the size of the matrix is too small.
+     */
     public Matrix(String label, int width, int height) throws IllegalArgumentException {
         if(width <= 1 || height <= 1) {
             throw new IllegalArgumentException("The minimum size for a matrix is 2x2.");
@@ -54,6 +61,10 @@ public class Matrix {
         }
     }
 
+    /**
+     * Formats the entries of the matrix into a string prefixed by the matrix's label.
+     * @return The formatted string.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
