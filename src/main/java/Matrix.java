@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Matrix {
 
-    private Vector[] columnVectors;
+    private Vector[] rowVectors;
     private String label;
     private Random rand = new Random();
 
@@ -18,24 +18,24 @@ public class Matrix {
     /**
      * Creates a new matrix object and initializes the column vectors with the ones provided.
      * @param label The label for the matrix.
-     * @param columnVectors The column vectors of the matrix.
+     * @param rowVectors The column vectors of the matrix.
      * @throws IllegalArgumentException if there are not enough vectors provided.
      * @throws IllegalArgumentException if the vectors are not equal in size.
      */
-    public Matrix(String label, Vector... columnVectors) throws IllegalArgumentException {
-        if(columnVectors.length <= 1) {
+    public Matrix(String label, Vector... rowVectors) throws IllegalArgumentException {
+        if(rowVectors.length <= 1) {
             throw new IllegalArgumentException("No column vectors provided!");
         }
 
-        this.columnVectors = new Vector[columnVectors.length];
+        this.rowVectors = new Vector[rowVectors.length];
         this.label = label;
-        this.width = columnVectors.length;
-        this.height = columnVectors[0].getSize();
+        this.height = rowVectors.length;
+        this.width = rowVectors[0].getSize();
 
-        for(int i = 0; i < columnVectors.length; i++) {
-            this.columnVectors[i] = columnVectors[i];
+        for(int i = 0; i < rowVectors.length; i++) {
+            this.rowVectors[i] = rowVectors[i];
 
-            if(columnVectors[i].getSize() != height) {
+            if(rowVectors[i].getSize() != width) {
                 throw new IllegalArgumentException("Column vectors are not equal size!");
             }
         }
@@ -53,11 +53,13 @@ public class Matrix {
             throw new IllegalArgumentException("The minimum size for a matrix is 2x2.");
         }
 
-        this.columnVectors = new Vector[width];
+        this.rowVectors = new Vector[width];
         this.label = label;
+        this.width = width;
+        this.height = height;
 
         for(int i = 0; i < width; i++) {
-            this.columnVectors[i] = new Vector("", height);
+            this.rowVectors[i] = new Vector("", height);
         }
     }
 
@@ -76,7 +78,7 @@ public class Matrix {
             sb.append("    ");
 
             for(int j = 0; j < width; j++) {
-                sb.append(columnVectors[i].getEntry(j));
+                sb.append(rowVectors[i].getEntry(j));
                 sb.append(" ");
             }
 
@@ -114,7 +116,7 @@ public class Matrix {
     public void setRand(int lowerBound, int upperBound) {
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                columnVectors[j].setEntry(i, (double) rand.nextInt(upperBound - lowerBound) + lowerBound);
+                rowVectors[j].setEntry(i, (double) rand.nextInt(upperBound - lowerBound) + lowerBound);
             }
         }
     }
