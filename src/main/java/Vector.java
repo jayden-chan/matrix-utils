@@ -36,12 +36,21 @@ public class Vector {
      * Initializes an empty vector of size {@code size}.
      * @param label The label for the vector.
      * @param size The size of the vector to create.
+     * @throws IllegalArgumentException if the size provided is 0.
      */
-    public Vector(String label, int size) {
+    public Vector(String label, int size) throws IllegalArgumentException {
+        if(size < 1) {
+            throw new IllegalArgumentException("Size of vector cannot be 0!");
+        }
+
         this.entries = new double[size];
         this.label = label;
     }
 
+    /**
+     * Formats the entries of the vector into a string prefixed by the vector's label.
+     * @return The formatted string.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -175,8 +184,8 @@ public class Vector {
 
     /**
      * Subtracts a vector from this vector.
-     * @param a     Vector to subtract.
      * @param label The label for the new vector.
+     * @param a     Vector to subtract.
      * @return The new vector.
      * @throws IllegalArgumentException if the vectors are now equal size.
      */
@@ -187,7 +196,7 @@ public class Vector {
         Vector toReturn = new Vector(label, this.getSize());
 
         for(int i = 0; i < a.getSize(); i++) {
-            toReturn.setEntry(i, a.getEntry(i) -this.getEntry(i));
+            toReturn.setEntry(i, this.getEntry(i) - a.getEntry(i));
         }
 
         return toReturn;
@@ -205,8 +214,8 @@ public class Vector {
 
     /**
      * Computes the cross product between this vector and another vector.
-     * @param a     The vector to cross with.
      * @param label The label for the new vector.
+     * @param a     The vector to cross with.
      * @return The cross product.
      * @throws IllegalArgumentException if either vector is not in R3.
      */
@@ -215,9 +224,9 @@ public class Vector {
             throw new IllegalArgumentException("The cross product is only supported in R3.");
         }
 
-        double i = a.getEntry(1) * this.getEntry(2) - a.getEntry(2) * this.getEntry(1);
-        double j = a.getEntry(2) * this.getEntry(0) - a.getEntry(0) * this.getEntry(2);
-        double k = a.getEntry(0) * this.getEntry(1) - a.getEntry(1) * this.getEntry(0);
+        double i = this.getEntry(1) * a.getEntry(2) - this.getEntry(2) * a.getEntry(1);
+        double j = this.getEntry(2) * a.getEntry(0) - this.getEntry(0) * a.getEntry(2);
+        double k = this.getEntry(0) * a.getEntry(1) - this.getEntry(1) * a.getEntry(0);
 
         return new Vector(label, i, j, k);
     }
