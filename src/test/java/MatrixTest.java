@@ -138,4 +138,85 @@ public class MatrixTest {
         assertEquals(m.hashCode(), p.hashCode());
         assertNotEquals(m.hashCode(), q.hashCode());
     }
+
+    @Test
+    public void testAdd() {
+        Matrix m = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix p = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestEquals", new Vector("", 4, 16, 6),
+                                            new Vector("", 18, 4, 12),
+                                            new Vector("", 0, 4, 14));
+
+        Matrix w = new Matrix("", 5, 7);
+
+        assertEquals(true, q.equals(m.add("TestEquals", p)));
+
+        thrown.expect(IllegalArgumentException.class);
+        m.add("", w);
+    }
+
+    @Test
+    public void testSub() {
+        Matrix m = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix p = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestEquals", new Vector("", 4, 16, 6),
+                                            new Vector("", 18, 4, 12),
+                                            new Vector("", 0, 4, 14));
+
+        Matrix w = new Matrix("", 5, 7);
+
+        assertEquals(true, m.equals(q.sub("TestEquals", p)));
+
+        thrown.expect(IllegalArgumentException.class);
+        m.sub("", w);
+    }
+
+    @Test
+    public void testMult() {
+        Matrix p = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestEquals", new Vector("", 4, 16, 6),
+                                            new Vector("", 18, 4, 12),
+                                            new Vector("", 0, 4, 14));
+
+        Matrix k = new Matrix("TestEquals", new Vector("", 152, 76, 150),
+                                            new Vector("", 72, 176, 162),
+                                            new Vector("", 36, 36, 122));
+
+        Matrix t = new Matrix("TestEquals", 9, 4);
+        Matrix w = p.mult("TestEquals", q);
+
+        assertEquals(true, w.equals(k));
+
+        thrown.expect(IllegalArgumentException.class);
+        w.mult(t);
+    }
+
+    @Test
+    public void testMultConst() {
+        Matrix m = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestEquals", new Vector("", 4, 16, 6),
+                                            new Vector("", 18, 4, 12),
+                                            new Vector("", 0, 4, 14));
+
+        m.mult(2);
+        assertEquals(true, m.equals(q));
+    }
 }

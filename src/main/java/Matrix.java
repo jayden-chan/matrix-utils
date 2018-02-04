@@ -156,6 +156,127 @@ public class Matrix {
 /*                          Arithmetic                          */
 /****************************************************************/
 
+    /**
+     * Adds this matrix and the matrix provided.
+     * @param label The label for the new matrix.
+     * @param m     The matrix to add.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the matrix passed is not the
+     * same size as this one.
+     */
+    public Matrix add(String label, Matrix m) throws IllegalArgumentException {
+        if(m.getWidth() != width || m.getHeight() != height) {
+            throw new IllegalArgumentException("Cannot add matrices of unequal size!");
+        }
+
+        Matrix toReturn = new Matrix(label, width, height);
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                toReturn.setEntry(i, j, this.getEntry(i, j) + m.getEntry(i, j));
+            }
+        }
+
+        return toReturn;
+    }
+    /**
+     * Adds this matrix and the matrix provided.
+     * @param m     The matrix to add.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the matrix passed is not the
+     * same size as this one.
+     */
+    public Matrix add(Matrix m) throws IllegalArgumentException {
+        return add("", m);
+    }
+
+    /**
+     * Subtracts a provided matrix from this matrix.
+     * @param label The label for the new matrix.
+     * @param m     The matrix to subtract.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the matrix passed is not the
+     * same size as this one.
+     */
+    public Matrix sub(String label, Matrix m) throws IllegalArgumentException {
+        if(m.getWidth() != width || m.getHeight() != height) {
+            throw new IllegalArgumentException("Cannot subtract matrices of unequal size!");
+        }
+
+        Matrix toReturn = new Matrix(label, width, height);
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                toReturn.setEntry(i, j, this.getEntry(i, j) - m.getEntry(i, j));
+            }
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Subtracts a provided matrix from this matrix.
+     * @param m     The matrix to subtract.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the matrix passed is not the
+     * same size as this one.
+     */
+    public Matrix sub(Matrix m) throws IllegalArgumentException {
+        return sub("", m);
+    }
+
+    /**
+     * Performs matrix multiplication between this matrix and the matrix provided.
+     * @param label The label for the new matrix.
+     * @param m     The matrix to multiply by.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the height of the matrix provided is
+     * not equal to the width of this matrix.
+     */
+    public Matrix mult(String label, Matrix m) throws IllegalArgumentException {
+        if(m.getHeight() != width) {
+            throw new IllegalArgumentException("Cannot multiply these matrices!");
+        }
+
+        Matrix toReturn = new Matrix(label, m.getWidth(), height);
+
+        for(int i = 0; i < m.getWidth(); i++) {
+            for(int j = 0; j < height; j++) {
+                double sum = 0;
+                for(int k = 0; k < width; k++) {
+                    sum += this.getEntry(k, j) * m.getEntry(i, k);
+                }
+
+                toReturn.setEntry(i, j, sum);
+            }
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Performs matrix multiplication between this matrix and the matrix provided.
+     * @param m     The matrix to multiply by.
+     * @return The new matrix.
+     * @throws IllegalArgumentException if the height of the matrix provided is
+     * not equal to the width of this matrix.
+     */
+    public Matrix mult(Matrix m) throws IllegalArgumentException {
+        return mult("", m);
+    }
+
+    /**
+     * Multiplies each entry in this matrix by a constant.
+     * @param c The constant by which to multiply.
+     */
+    public void mult(double c) {
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                this.setEntry(i, j, this.getEntry(i, j) * c);
+            }
+        }
+    }
+
 /****************************************************************/
 /*                           Override                           */
 /****************************************************************/
@@ -203,14 +324,14 @@ public class Matrix {
 
         Matrix m = (Matrix) obj;
 
-        if(m.getWidth() != width || m.getHeight() != height) {
+        if(m.getWidth() != width || m.getHeight() != height || m.getLabel() != label) {
             return false;
         }
-        if(m.getLabel() != label) return false;
 
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
                 if(m.getEntry(i, j) != this.getEntry(i, j)) {
+                    System.out.println("Entries not same");
                     return false;
                 }
             }
