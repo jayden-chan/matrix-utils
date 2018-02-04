@@ -132,4 +132,23 @@ public class VectorTest {
         thrown.expect(IllegalArgumentException.class);
         v.dot(q);
     }
+
+    @Test
+    public void testEquals() {
+        Vector v = new Vector("TestEquals", 1, 2, 3);
+        Vector w = new Vector("TestEquals", 1, 2, 3);
+        Vector s = new Vector("TestNotEquals", 6, 21, 3);
+
+        assertEquals(true, v.equals(w));
+        assertEquals(true, w.equals(v));
+        assertEquals(false, v.equals(s));
+    }
+
+    @Test
+    public void testHashCode() {
+        Vector v = new Vector("TestEquals", 1, 2, 3);
+        Vector w = new Vector("TestEquals", 1, 2, 3);
+
+        assertEquals(v.hashCode(), w.hashCode());
+    }
 }

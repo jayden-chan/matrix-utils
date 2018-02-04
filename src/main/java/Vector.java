@@ -6,12 +6,12 @@
  */
 
 import java.util.Random;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Vector {
 
     private double entries[];
     private String label;
-    private Random rand = new Random();
 
     /**
      * Creates a new vector object and initializes the entires of the vector with the values provided.
@@ -33,7 +33,7 @@ public class Vector {
     }
 
     /**
-     * Initializes an empty vector of size {@code size}.
+     * Initializes an empty vector of the size provided.
      * @param label The label for the vector.
      * @param size The size of the vector to create.
      * @throws IllegalArgumentException if the size provided is 0.
@@ -47,32 +47,12 @@ public class Vector {
         this.label = label;
     }
 
-    /**
-     * Formats the entries of the vector into a string prefixed by the vector's label.
-     * @return The formatted string.
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(label);
-        sb.append(": \n\n");
-
-        for(int i = 0; i < entries.length; i++) {
-            sb.append("    ");
-            sb.append(entries[i]);
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
-
 /****************************************************************/
 /*                      Getters / setters                       */
 /****************************************************************/
 
     /**
-     * Gets the size of the vector.
+     * Gets the number of entries in the vector.
      * @return The size of the vector.
      */
     public int getSize() {
@@ -94,7 +74,7 @@ public class Vector {
     }
 
     /**
-     * Gets the value of the vector's entry at index {@code index}.
+     * Gets the value of the vector's entry at the index provided.
      * @param index The index of the entry to return.
      * @return The value of the entry.
      * @throws IndexOutOfBoundsException if the index is greater than the size of the vector.
@@ -108,7 +88,7 @@ public class Vector {
     }
 
     /**
-     * Sets the value of the entry at index {@code index} to value {@code value}.
+     * Sets the value of the entry at the index provided to value provided.
      * @param index The index for the entry to be changed.
      * @param value The new value for the entry.
      * @throws IndexOutOfBoundsException if the index is greater than the size of the vector.
@@ -127,6 +107,8 @@ public class Vector {
      * @param upperBound The upper bound of the random number range.
      */
     public void setRand(int lowerBound, int upperBound) {
+        Random rand = new Random();
+
         for(int i = 0; i < entries.length; i++) {
             entries[i] = (double) rand.nextInt(upperBound - lowerBound) + lowerBound;
         }
@@ -259,5 +241,77 @@ public class Vector {
         }
 
         return sum;
+    }
+
+/****************************************************************/
+/*                           Override                           */
+/****************************************************************/
+
+    /**
+     * Formats the entries of the vector into a string prefixed by the vector's label.
+     * @return The formatted string.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(label);
+        sb.append(": \n\n");
+
+        for(int i = 0; i < entries.length; i++) {
+            sb.append("    ");
+            sb.append(entries[i]);
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Test for equality between this vector and another vector.
+     * Will fail if the vectors are not the same size, if they do not
+     * have the same label, or if their entries are not all identical.
+     * Will also fail if the object passed is null or not a Vector.
+     * @param obj The object to compare to.
+     * @return Whether or not the object passed is equal to this one.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Vector)) {
+            return false;
+        }
+
+        if(obj == this) return true;
+
+        Vector v = (Vector) obj;
+
+        if(v.getSize() != this.getSize()) return false;
+        if(v.getLabel() != this.getLabel()) return false;
+
+        for(int i = 0; i < this.getSize(); i++) {
+            if(v.getEntry(i) != this.getEntry(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the hash code for this object. Overridden to
+     * ensure that the contract for <code>hashCode()<\code> is not
+     * broken as a result of overriding <code>equals()<\code>.
+     * @return The hash code.
+     */
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hb = new HashCodeBuilder(17, 31);
+
+        for(int i = 0; i < this.getSize(); i++) {
+            hb.append(this.getEntry(i));
+        }
+
+        hb.append(this.getLabel());
+        return hb.toHashCode();
     }
 }
