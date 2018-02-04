@@ -1,5 +1,5 @@
 /**
- * @author Jayden Chan <jaydencn7@gmail.com>
+ * @author Jayden Chan
  * @version 1
  *
  * Entry point for the application.

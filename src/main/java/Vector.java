@@ -1,5 +1,5 @@
 /**
- * @author Jayden Chan <jaydencn7@gmail.com>
+ * @author Jayden Chan
  * @version 1
  *
  * An n-dimensional vector.
@@ -299,8 +299,8 @@ public class Vector {
 
     /**
      * Returns the hash code for this object. Overridden to
-     * ensure that the contract for <code>hashCode()<\code> is not
-     * broken as a result of overriding <code>equals()<\code>.
+     * ensure that the contract for <code>hashCode()</code> is not
+     * broken as a result of overriding <code>equals()</code>.
      * @return The hash code.
      */
     @Override
