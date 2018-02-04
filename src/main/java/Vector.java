@@ -286,10 +286,10 @@ public class Vector {
         Vector v = (Vector) obj;
 
         if(v.getSize() != this.getSize()) return false;
-        if(v.getLabel() != this.getLabel()) return false;
+        if(v.getLabel() != label) return false;
 
         for(int i = 0; i < this.getSize(); i++) {
-            if(v.getEntry(i) != this.getEntry(i)) {
+            if(v.getEntry(i) != entries[i]) {
                 return false;
             }
         }
@@ -311,7 +311,7 @@ public class Vector {
             hb.append(this.getEntry(i));
         }
 
-        hb.append(this.getLabel());
+        hb.append(label);
         return hb.toHashCode();
     }
 }

@@ -53,11 +53,36 @@ public class MatrixTest {
         Matrix n = new Matrix("Test 2", new Vector("", 5, 7, 2)
                                       , new Vector("", 5, 9, 1));
 
-        int result = m.getHeight();
-        int result2 = n.getHeight();
+        assertEquals(10, m.getHeight(), 0);
+        assertEquals(2, n.getHeight(), 0);
+    }
 
-        assertEquals(10, result, 0);
-        assertEquals(2, result2, 0);
+    @Test
+    public void testGetEntry() {
+        Matrix m = new Matrix("Test 1", new Vector("", 1, 2, 3),
+                                        new Vector("", 7, 2, 0),
+                                        new Vector("", 0, 2, 5));
+
+        assertEquals(0, m.getEntry(2, 1), ADD_THRESH);
+        assertEquals(5, m.getEntry(2, 2), ADD_THRESH);
+        assertEquals(1, m.getEntry(0, 0), ADD_THRESH);
+
+        thrown.expect(IndexOutOfBoundsException.class);
+        m.getEntry(10, 10);
+    }
+
+    @Test
+    public void testSetEntry() {
+        Matrix m = new Matrix("Test 1", new Vector("", 2, 8, 3),
+                                        new Vector("", 9, 2, 6),
+                                        new Vector("", 0, 2, 7));
+
+        assertEquals(6, m.getEntry(2, 1), ADD_THRESH);
+        m.setEntry(2, 1, 90);
+        assertEquals(90, m.getEntry(2, 1), ADD_THRESH);
+
+        thrown.expect(IndexOutOfBoundsException.class);
+        m.setEntry(10, 10, 1);
     }
 
     @Test
@@ -74,5 +99,43 @@ public class MatrixTest {
 
         assertEquals(true, m.isSquare());
         assertEquals(false, q.isSquare());
+    }
+
+    @Test
+    public void testEquals() {
+        Matrix m = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix p = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestNotEquals", new Vector("", 2, 8, 3),
+                                               new Vector("", 9, 2, 6),
+                                               new Vector("", 0, 2, 7));
+
+        assertEquals(true, m.equals(p));
+        assertEquals(true, p.equals(m));
+        assertEquals(false, q.equals(m));
+        assertEquals(false, m.equals(q));
+    }
+
+    @Test
+    public void testHashCode() {
+        Matrix m = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix p = new Matrix("TestEquals", new Vector("", 2, 8, 3),
+                                            new Vector("", 9, 2, 6),
+                                            new Vector("", 0, 2, 7));
+
+        Matrix q = new Matrix("TestNotEquals", new Vector("", 2, 8, 3),
+                                               new Vector("", 9, 2, 6),
+                                               new Vector("", 0, 2, 7));
+
+        assertEquals(m.hashCode(), p.hashCode());
+        assertNotEquals(m.hashCode(), q.hashCode());
     }
 }

@@ -9,14 +9,10 @@
 public class App {
 
     public static void main(String[] args) {
-        Vector v = new Vector("v", 1, 2, 3);
-        Vector q = new Vector("q", 3, 2, 1);
-        System.out.println("Suh dudes.");
-        System.out.println(v.toString());
-        System.out.println(q.toString());
+        Matrix m = new Matrix("m", new Vector("", 1, 2, 3),
+                                   new Vector("", 5, 8, 2),
+                                   new Vector("", 2, 9, 4));
 
-        Vector wq = v.add("vxq", q);
-        System.out.println(wq.toString());
-        System.out.println(v.toString());
+        System.out.println(m.toString());
     }
 }

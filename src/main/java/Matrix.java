@@ -6,6 +6,7 @@
  */
 
 import java.util.Random;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Matrix {
 
@@ -63,31 +64,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Formats the entries of the matrix into a string prefixed by the matrix's label.
-     * @return The formatted string.
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(label);
-        sb.append(": \n\n");
-
-        for(int i = 0; i < height; i++) {
-            sb.append("    ");
-
-            for(int j = 0; j < width; j++) {
-                sb.append(rowVectors[i].getEntry(j));
-                sb.append(" ");
-            }
-
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
-
 /****************************************************************/
 /*                      Getters / setters                       */
 /****************************************************************/
@@ -106,6 +82,38 @@ public class Matrix {
      */
     public int getHeight() {
         return this.height;
+    }
+
+    /**
+     * Returns the value of the entry in the position provided.
+     * @param x The x index.
+     * @param y The y index.
+     * @return The value at the specified index.
+     * @throws IndexOutOfBoundsException if the x or y indices provided are greater
+     * than the width or height of the matrix respectively.
+     */
+    public double getEntry(int x, int y) throws IndexOutOfBoundsException {
+        if(x >= width || y >= height) {
+            throw new IndexOutOfBoundsException("Index out of bounds!");
+        }
+
+        return rowVectors[y].getEntry(x);
+    }
+
+    /**
+     * Sets the value of the entry in the position provided to the value provided.
+     * @param x     The x index.
+     * @param y     The y index.
+     * @param value The value to set the entry to.
+     * @throws IndexOutOfBoundsException if the x or y indices provided are greater
+     * than the width or height of the matrix respectively.
+     */
+    public void setEntry(int x, int y, double value) throws IndexOutOfBoundsException {
+        if(x >= width || y >= height) {
+            throw new IndexOutOfBoundsException("Index out of bounds!");
+        }
+
+        rowVectors[y].setEntry(x, value);
     }
 
     /**
@@ -141,11 +149,93 @@ public class Matrix {
      * @return Whether or not the matrix is square.
      */
     public boolean isSquare() {
-        return width == height;
+        return this.width == this.height;
     }
 
 /****************************************************************/
 /*                          Arithmetic                          */
 /****************************************************************/
 
+/****************************************************************/
+/*                           Override                           */
+/****************************************************************/
+
+    /**
+     * Formats the entries of the matrix into a string prefixed by the matrix's label.
+     * @return The formatted string.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(label);
+        sb.append(": \n\n");
+
+        for(int i = 0; i < height; i++) {
+            sb.append("    ");
+
+            for(int j = 0; j < width; j++) {
+                sb.append(rowVectors[i].getEntry(j));
+                sb.append(" ");
+            }
+
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Tests whether this matrix is equal to the object provided.
+     * Will fail if the matrices are not the same size, if their labels
+     * are not the same, or if any of their entries differ. Will also
+     * fail if the object passed is null or not a Matrix.
+     * @param obj The object to compare to.
+     * @return Whether or not the object passed is equal to this one.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Matrix)) {
+            return false;
+        }
+
+        if(obj == this) return true;
+
+        Matrix m = (Matrix) obj;
+
+        if(m.getWidth() != width || m.getHeight() != height) {
+            return false;
+        }
+        if(m.getLabel() != label) return false;
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if(m.getEntry(i, j) != this.getEntry(i, j)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the hash code for this object. Overridden to
+     * ensure that the contract for <code>hashCode()<\code> is not
+     * broken as a result of overriding <code>equals()<\code>.
+     * @return The hash code.
+     */
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hb = new HashCodeBuilder(17, 31);
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                hb.append(this.getEntry(i, j));
+            }
+        }
+
+        hb.append(label);
+        return hb.toHashCode();
+    }
 }
