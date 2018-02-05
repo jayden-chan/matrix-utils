@@ -219,4 +219,47 @@ public class MatrixTest {
         m.mult(2);
         assertEquals(true, m.equals(q));
     }
+
+    @Test
+    public void testIdentity() {
+        Matrix m = new Matrix("", 3, 3);
+        Matrix p = new Matrix("", new Vector("", 1, 0, 0),
+                                  new Vector("", 0, 1, 0),
+                                  new Vector("", 0, 0, 1));
+        Matrix q = new Matrix("", 4, 5);
+
+        assertEquals(true, m.identity().equals(p));
+
+        thrown.expect(UnsupportedOperationException.class);
+        q.identity();
+    }
+
+    @Test
+    public void testTranspose() {
+        Matrix m = new Matrix("", new Vector("", 7, 3, 9, 0),
+                                  new Vector("", 7, 2, 6, 1),
+                                  new Vector("", 0, 2, 7, 3));
+
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0),
+                                  new Vector("", 3, 2, 2),
+                                  new Vector("", 9, 6, 7),
+                                  new Vector("", 0, 1, 3));
+
+        assertEquals(true, m.transpose().equals(w));
+    }
+
+    @Test
+    public void testTrace() {
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0, 9),
+                                  new Vector("", 3, 2, 2, 5),
+                                  new Vector("", 9, 6, 7, 2),
+                                  new Vector("", 0, 1, 3, 2));
+
+        Matrix q = new Matrix("", 3, 7);
+
+        assertEquals(18, w.trace(), ADD_THRESH);
+
+        thrown.expect(UnsupportedOperationException.class);
+        q.trace();
+    }
 }

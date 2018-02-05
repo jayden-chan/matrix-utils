@@ -54,13 +54,13 @@ public class Matrix {
             throw new IllegalArgumentException("The minimum size for a matrix is 2x2.");
         }
 
-        this.rowVectors = new Vector[width];
+        this.rowVectors = new Vector[height];
         this.label = label;
         this.width = width;
         this.height = height;
 
-        for(int i = 0; i < width; i++) {
-            this.rowVectors[i] = new Vector("", height);
+        for(int i = 0; i < height; i++) {
+            this.rowVectors[i] = new Vector("", width);
         }
     }
 
@@ -275,6 +275,70 @@ public class Matrix {
                 this.setEntry(i, j, this.getEntry(i, j) * c);
             }
         }
+    }
+
+    /**
+     * Returns the identity matrix whose dimensions match those of this
+     * matrix. An identity matrix is one whose values are all 0 except
+     * those on the diagonal. Example:
+     * <pre>
+     *       1 0 0 0
+     *       0 1 0 0
+     *       0 0 1 0
+     *       0 0 0 1
+     * </pre>
+     * @return The identity matrix.
+     * @throws UnsupportedOperationException if this matrix is not square.
+     */
+    public Matrix identity() throws UnsupportedOperationException {
+        if(!isSquare()) {
+            throw new UnsupportedOperationException("Cannot get the identity of a non-square matrix!");
+        }
+
+        Matrix toReturn = new Matrix(this.label, this.width, this.height);
+
+        for(int i = 0; i < width; i++) {
+            toReturn.setEntry(i, i, 1);
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Returns the transpose of this matrix. The transpose of a matrix
+     * is the same matrix but with the row vectors as column vectors, and
+     * vice versa.
+     * @return The transpose of this matrix.
+     */
+    public Matrix transpose() {
+        Matrix toReturn = new Matrix(label, height, width);
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                toReturn.setEntry(j, i, this.getEntry(i, j));
+            }
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Returns the trace of this matrix. The trace of a square matrix
+     * is the sum of its diagonal entries.
+     * @return The trace of this matrix.
+     * @throws UnsupportedOperationException if the matrix is not square.
+     */
+    public double trace() throws UnsupportedOperationException {
+        if(!isSquare()) {
+            throw new UnsupportedOperationException("Cannot take the trace of a non-square matrix!");
+        }
+
+        double sum = 0;
+        for(int i = 0; i < width; i++) {
+            sum += this.getEntry(i, i);
+        }
+
+        return sum;
     }
 
 /****************************************************************/
