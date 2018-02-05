@@ -187,7 +187,7 @@ public class Matrix {
      * same size as this one.
      */
     public Matrix add(Matrix m) throws IllegalArgumentException {
-        return add("", m);
+        return add(this.label, m);
     }
 
     /**
@@ -222,7 +222,7 @@ public class Matrix {
      * same size as this one.
      */
     public Matrix sub(Matrix m) throws IllegalArgumentException {
-        return sub("", m);
+        return sub(this.label, m);
     }
 
     /**
@@ -262,7 +262,7 @@ public class Matrix {
      * not equal to the width of this matrix.
      */
     public Matrix mult(Matrix m) throws IllegalArgumentException {
-        return mult("", m);
+        return mult(this.label, m);
     }
 
     /**

@@ -161,7 +161,7 @@ public class Vector {
      * @throws IllegalArgumentException if the two vectors are not equal size.
      */
     public Vector add(Vector a) throws IllegalArgumentException {
-        return add("", a);
+        return add(this.label, a);
     }
 
     /**
@@ -191,7 +191,7 @@ public class Vector {
      * @throws IllegalArgumentException if the vectors are now equal size.
      */
     public Vector sub(Vector a) throws IllegalArgumentException {
-        return sub("", a);
+        return sub(this.label, a);
     }
 
     /**
@@ -220,7 +220,7 @@ public class Vector {
      * @throws IllegalArgumentException if either vector is not in R3.
      */
     public Vector cross(Vector a) throws IllegalArgumentException {
-        return cross("", a);
+        return cross(this.label, a);
     }
 
     /**
