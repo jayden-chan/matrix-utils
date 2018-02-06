@@ -216,7 +216,7 @@ public class Matrix {
 
     /**
      * Subtracts a provided matrix from this matrix.
-     * @param m     The matrix to subtract.
+     * @param m The matrix to subtract.
      * @return The new matrix.
      * @throws IllegalArgumentException if the matrix passed is not the
      * same size as this one.
@@ -256,7 +256,7 @@ public class Matrix {
 
     /**
      * Performs matrix multiplication between this matrix and the matrix provided.
-     * @param m     The matrix to multiply by.
+     * @param m The matrix to multiply by.
      * @return The new matrix.
      * @throws IllegalArgumentException if the height of the matrix provided is
      * not equal to the width of this matrix.
@@ -421,6 +421,8 @@ public class Matrix {
         }
 
         hb.append(label);
+        hb.append(width);
+        hb.append(height);
         return hb.toHashCode();
     }
 }
