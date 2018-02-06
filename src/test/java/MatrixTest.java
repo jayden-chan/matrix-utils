@@ -262,4 +262,36 @@ public class MatrixTest {
         thrown.expect(UnsupportedOperationException.class);
         q.trace();
     }
+
+    @Test
+    public void testGetRowVector() {
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0, 9),
+                                  new Vector("", 3, 2, 2, 5),
+                                  new Vector("", 9, 6, 7, 2),
+                                  new Vector("", 0, 1, 3, 2));
+
+        Vector v = new Vector("", 3, 2, 2, 5);
+        assertEquals(true, v.equals(w.getRowVector(1)));
+
+        thrown.expect(IndexOutOfBoundsException.class);
+        w.getRowVector(5);
+        thrown.expect(IndexOutOfBoundsException.class);
+        w.getRowVector(-1);
+    }
+
+    @Test
+    public void testGetColumnVector() {
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0, 9),
+                                  new Vector("", 3, 2, 2, 5),
+                                  new Vector("", 9, 6, 7, 2),
+                                  new Vector("", 0, 1, 3, 2));
+
+        Vector v = new Vector("", 0, 2, 7, 3);
+        assertEquals(true, v.equals(w.getColumnVector(2)));
+
+        thrown.expect(IndexOutOfBoundsException.class);
+        w.getColumnVector(5);
+        thrown.expect(IndexOutOfBoundsException.class);
+        w.getColumnVector(-1);
+    }
 }

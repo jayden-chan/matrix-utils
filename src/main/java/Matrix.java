@@ -93,7 +93,7 @@ public class Matrix {
      * than the width or height of the matrix respectively.
      */
     public double getEntry(int x, int y) throws IndexOutOfBoundsException {
-        if(x >= width || y >= height) {
+        if(x >= width || x < 0 || y >= height || y < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds!");
         }
 
@@ -102,18 +102,50 @@ public class Matrix {
 
     /**
      * Sets the value of the entry in the position provided to the value provided.
-     * @param x     The x index.
-     * @param y     The y index.
+     * @param x The x index.
+     * @param y The y index.
      * @param value The value to set the entry to.
      * @throws IndexOutOfBoundsException if the x or y indices provided are greater
      * than the width or height of the matrix respectively.
      */
     public void setEntry(int x, int y, double value) throws IndexOutOfBoundsException {
-        if(x >= width || y >= height) {
+        if(x >= width || x < 0 || y >= height || y < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds!");
         }
 
         rowVectors[y].setEntry(x, value);
+    }
+
+    /**
+     * Returns the entries in a specific row as a {@code Vector}.
+     * @param index The index of the row to return.
+     * @return The row vector at the index specified.
+     */
+    public Vector getRowVector(int index) throws IndexOutOfBoundsException {
+        if(index >= this.height || index < 0) {
+            throw new IndexOutOfBoundsException("Index greater than matrix height!");
+        }
+
+        return rowVectors[index];
+    }
+
+    /**
+     * Returns the entries in a specific column as a {@code Vector}.
+     * @param index The index of the column to return.
+     * @return The column vector at the index specified.
+     */
+    public Vector getColumnVector(int index) throws IndexOutOfBoundsException {
+        if(index >= this.width || index < 0) {
+            throw new IndexOutOfBoundsException("Index greater than matrix width!");
+        }
+
+        Vector toReturn = new Vector(this.label, this.height);
+
+        for(int i = 0; i < height; i++) {
+            toReturn.setEntry(i, this.getEntry(index, i));
+        }
+
+        return toReturn;
     }
 
     /**

@@ -80,7 +80,7 @@ public class Vector {
      * @throws IndexOutOfBoundsException if the index is greater than the size of the vector.
      */
     public double getEntry(int index) throws IndexOutOfBoundsException {
-        if(index >= entries.length) {
+        if(index >= entries.length || index < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds!");
         }
 
@@ -94,7 +94,7 @@ public class Vector {
      * @throws IndexOutOfBoundsException if the index is greater than the size of the vector.
      */
     public void setEntry(int index, double value) throws IndexOutOfBoundsException {
-        if(index >= entries.length) {
+        if(index >= entries.length || index < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds!");
         }
 
