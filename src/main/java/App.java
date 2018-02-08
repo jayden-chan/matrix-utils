@@ -9,14 +9,18 @@
 public class App {
 
     public static void main(String[] args) {
-        Matrix p = new Matrix("p", new Vector("", 2, 8, 3, 9),
-                                   new Vector("", 9, 2, 6, 2),
-                                   new Vector("", 0, 2, 7, 8));
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0, 9),
+                                  new Vector("", 3, 2, 2, 5),
+                                  new Vector("", 9, 6, 7, 2),
+                                  new Vector("", 0, 1, 3, 2));
 
-        System.out.println(p.toString());
+        Matrix r = new Matrix("", new Vector("", 1, 0, 0, 0),
+                                  new Vector("", 0, 1, 0, 0),
+                                  new Vector("", 0, 0, 1, 0),
+                                  new Vector("", 0, 0, 0, 1));
 
-        Matrix w = p.rref();
-
-        System.out.println(w.toString());
+        System.out.println(w.reducedRowEchelon().toString());
+        System.out.println(r.toString());
+        System.out.println(w.reducedRowEchelon().equals(r));
     }
 }

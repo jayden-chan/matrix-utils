@@ -16,6 +16,11 @@ public class Matrix {
 
     private int width, height;
 
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_RESET = "\u001B[0m";
+
+    private static final double COMPARE_PRECISION = 1e-2;
+
     /**
      * Creates a new matrix object and initializes the column vectors with the ones provided.
      * @param label The label for the matrix.
@@ -169,11 +174,19 @@ public class Matrix {
     }
 
     /**
-     * Returns the vector's label.
+     * Returns the matrix's label.
      * @return The string containing the matrix's label.
      */
     public String getLabel() {
         return this.label;
+    }
+
+    /**
+     * Sets the matrix's label.
+     * @param label The new label.
+     */
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     /**
@@ -373,9 +386,81 @@ public class Matrix {
         return sum;
     }
 
-    public Matrix rref() {
-        Matrix toReturn = this;
+    /**
+     * Computes the Row Echelon Form of the matrix.
+     * @return The Row Echelon Form.
+     */
+    public Matrix rowEchelon() {
+        Matrix toReturn = this.cloneMatrix();
         int pivot[];
+
+        int currRow = 0;
+
+        columnLoop:
+        for(int currCol = 0; currCol < height; currCol++) {
+            currRow = currCol;
+
+            // Find the next pivot
+            while(toReturn.getEntry(currCol, currRow) == 0) {
+                currRow++;
+                if(currRow == height){
+                    continue columnLoop;
+                }
+            }
+
+            // Divide the row by the pivot to make it equal 1
+            toReturn.multRow(currRow, 1.0 / toReturn.getEntry(currCol, currRow));
+
+            // Place the row with the pivot in the highest row that doesn't contain
+            // a previously used pivot
+            toReturn.swapRows(currCol, currRow);
+            currRow = 1+currCol;
+
+            // Use the pivot row to make all entries in the column below the pivot 0
+            while(currRow < height) {
+                double currEntry = toReturn.getEntry(currCol, currRow);
+                if(currEntry != 0) {
+                    toReturn.multRow(currRow, 1.0 / currEntry);
+                    toReturn.subRow(currCol, currRow);
+                }
+
+                currRow++;
+            }
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Computes the Reduced Row Echelon Form of the matrix.
+     * @return The Reduced Row Echelon Form.
+     */
+    public Matrix reducedRowEchelon() {
+        Matrix toReturn = this.rowEchelon();
+
+        int currCol = 0;
+        int currRow = toReturn.getHeight()-1;
+
+        while(currRow >= 0) {
+            while(Math.abs(toReturn.getEntry(currCol, currRow) - 1) > 1e-9) {
+                currCol++;
+                if(currCol == toReturn.getWidth()) {
+                    currRow--;
+                    currCol = 0;
+                }
+            }
+
+            for(int i = currRow; i > 0; i--) {
+                double above = toReturn.getEntry(currCol, i-1);
+                if(above != 0) {
+                    toReturn.multRow(currRow, above);
+                    toReturn.subRow(currRow, i-1);
+                    toReturn.multRow(currRow, 1.0 / above);
+                }
+            }
+            currCol = 0;
+            currRow--;
+        }
 
         return toReturn;
     }
@@ -399,7 +484,12 @@ public class Matrix {
             sb.append("    ");
 
             for(int j = 0; j < width; j++) {
-                sb.append(rowVectors[i].getEntry(j));
+                if(this.getEntry(j, i) != 0) {
+                    sb.append(String.format(ANSI_BLUE + "%10.3f" + ANSI_RESET, rowVectors[i].getEntry(j)));
+                }
+                else {
+                    sb.append(String.format("%10.3f", rowVectors[i].getEntry(j)));
+                }
                 sb.append(" ");
             }
 
@@ -427,14 +517,13 @@ public class Matrix {
 
         Matrix m = (Matrix) obj;
 
-        if(m.getWidth() != width || m.getHeight() != height || m.getLabel() != label) {
+        if(m.getWidth() != this.width || m.getHeight() != this.height || m.getLabel() != this.label) {
             return false;
         }
 
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
-                if(m.getEntry(i, j) != this.getEntry(i, j)) {
-                    System.out.println("Entries not same");
+                if(Math.abs(m.getEntry(i, j) - this.getEntry(i, j)) > COMPARE_PRECISION) {
                     return false;
                 }
             }
@@ -469,27 +558,54 @@ public class Matrix {
 /*                        Helper methods                        */
 /****************************************************************/
 
+    /*
+     * Swaps rows.
+     */
     private void swapRows(int index1, int index2) {
         Vector temp = rowVectors[index1];
         rowVectors[index1] = rowVectors[index2];
         rowVectors[index2] = temp;
     }
 
+    /*
+     * Multiplies each entry in the row by the constant.
+     */
     private void multRow(int index, double c) {
         for(int i = 0; i < width; i++) {
             this.setEntry(i, index, this.getEntry(i, index) * c);
         }
     }
 
+    /*
+     * Adds row 1 to row 2.
+     */
     private void addRow(int index1, int index2) {
         for(int i = 0; i < width; i++) {
             this.setEntry(i, index2, this.getEntry(i, index2) + this.getEntry(i ,index1));
         }
     }
 
+    /*
+     * Subtracts row 1 from row 2.
+     */
     private void subRow(int index1, int index2) {
         for(int i = 0; i < width; i++) {
-            this.setEntry(i, index2, this.getEntry(i, index2) - this.getEntry(i ,index1));
+            this.setEntry(i, index2, this.getEntry(i, index2) - this.getEntry(i, index1));
         }
+    }
+
+    /*
+     * Provides a clone of this matrix.
+     */
+    private Matrix cloneMatrix() {
+        Matrix toReturn = new Matrix(this.label, this.width, this.height);
+
+        for(int i = 0; i < this.width; i++) {
+            for(int j = 0; j < this.height; j++) {
+                toReturn.setEntry(i, j, this.getEntry(i, j));
+            }
+        }
+
+        return toReturn;
     }
 }

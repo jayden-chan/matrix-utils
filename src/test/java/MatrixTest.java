@@ -294,4 +294,19 @@ public class MatrixTest {
         thrown.expect(IndexOutOfBoundsException.class);
         w.getColumnVector(-1);
     }
+
+    @Test
+    public void testRREF() {
+        Matrix w = new Matrix("", new Vector("", 7, 7, 0, 9),
+                                  new Vector("", 3, 2, 2, 5),
+                                  new Vector("", 9, 6, 7, 2),
+                                  new Vector("", 0, 1, 3, 2));
+
+        Matrix r = new Matrix("", new Vector("", 1, 0, 0, 0),
+                                  new Vector("", 0, 1, 0, 0),
+                                  new Vector("", 0, 0, 1, 0),
+                                  new Vector("", 0, 0, 0, 1));
+
+        assertEquals(true, w.reducedRowEchelon().equals(r));
+    }
 }
