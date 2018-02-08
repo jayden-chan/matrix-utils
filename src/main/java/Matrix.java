@@ -373,6 +373,13 @@ public class Matrix {
         return sum;
     }
 
+    public Matrix rref() {
+        Matrix toReturn = this;
+        int pivot[];
+
+        return toReturn;
+    }
+
 /****************************************************************/
 /*                           Override                           */
 /****************************************************************/
@@ -456,5 +463,33 @@ public class Matrix {
         hb.append(width);
         hb.append(height);
         return hb.toHashCode();
+    }
+
+/****************************************************************/
+/*                        Helper methods                        */
+/****************************************************************/
+
+    private void swapRows(int index1, int index2) {
+        Vector temp = rowVectors[index1];
+        rowVectors[index1] = rowVectors[index2];
+        rowVectors[index2] = temp;
+    }
+
+    private void multRow(int index, double c) {
+        for(int i = 0; i < width; i++) {
+            this.setEntry(i, index, this.getEntry(i, index) * c);
+        }
+    }
+
+    private void addRow(int index1, int index2) {
+        for(int i = 0; i < width; i++) {
+            this.setEntry(i, index2, this.getEntry(i, index2) + this.getEntry(i ,index1));
+        }
+    }
+
+    private void subRow(int index1, int index2) {
+        for(int i = 0; i < width; i++) {
+            this.setEntry(i, index2, this.getEntry(i, index2) - this.getEntry(i ,index1));
+        }
     }
 }

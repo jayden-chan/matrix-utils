@@ -13,6 +13,10 @@ public class App {
                                    new Vector("", 9, 2, 6, 2),
                                    new Vector("", 0, 2, 7, 8));
 
-        System.out.println(p.transpose().toString());
+        System.out.println(p.toString());
+
+        Matrix w = p.rref();
+
+        System.out.println(w.toString());
     }
 }
