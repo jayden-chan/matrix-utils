@@ -204,7 +204,7 @@ public class Matrix {
     /**
      * Adds this matrix and the matrix provided.
      * @param label The label for the new matrix.
-     * @param m     The matrix to add.
+     * @param m The matrix to add.
      * @return The new matrix.
      * @throws IllegalArgumentException if the matrix passed is not the
      * same size as this one.
@@ -226,7 +226,7 @@ public class Matrix {
     }
     /**
      * Adds this matrix and the matrix provided.
-     * @param m     The matrix to add.
+     * @param m The matrix to add.
      * @return The new matrix.
      * @throws IllegalArgumentException if the matrix passed is not the
      * same size as this one.
@@ -238,7 +238,7 @@ public class Matrix {
     /**
      * Subtracts a provided matrix from this matrix.
      * @param label The label for the new matrix.
-     * @param m     The matrix to subtract.
+     * @param m The matrix to subtract.
      * @return The new matrix.
      * @throws IllegalArgumentException if the matrix passed is not the
      * same size as this one.
@@ -273,7 +273,7 @@ public class Matrix {
     /**
      * Performs matrix multiplication between this matrix and the matrix provided.
      * @param label The label for the new matrix.
-     * @param m     The matrix to multiply by.
+     * @param m The matrix to multiply by.
      * @return The new matrix.
      * @throws IllegalArgumentException if the height of the matrix provided is
      * not equal to the width of this matrix.
@@ -392,7 +392,6 @@ public class Matrix {
      */
     public Matrix rowEchelon() {
         Matrix toReturn = this.cloneMatrix();
-        int pivot[];
 
         int currRow = 0;
 
