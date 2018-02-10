@@ -23,9 +23,16 @@ public class Memory {
     enum EntryType {
         VECTOR,
         MATRIX,
-        CONSTANT
+        CONSTANT,
+        NULL
     }
 
+    /**
+     * Stores the provided Matrix in memory with the provided identifier.
+     * @param label The identifier for the Matrix.
+     * @param data  The Matrix.
+     * @throws IllegalArgumentException if the identifier provided is already taken.
+     */
     public static void store(String label, Matrix data) throws IllegalArgumentException {
         for(MemoryEntry<EntryType> entry : identifiers) {
             if(label.equals(entry.getLabel())) {
@@ -37,7 +44,13 @@ public class Memory {
         matrices.add(new MemoryEntry<Matrix>(label, data));
     }
 
-    public static void store(String label, Vector data) throws IllegalArgumentException {
+     /**
+     * Stores the provided Vector in memory with the provided identifier.
+     * @param label The identifier for the Vector.
+     * @param data  The Vector.
+     * @throws IllegalArgumentException if the identifier provided is already taken.
+     */
+   public static void store(String label, Vector data) throws IllegalArgumentException {
         for(MemoryEntry<EntryType> entry : identifiers) {
             if(label.equals(entry.getLabel())) {
                 throw new IllegalArgumentException("Identifier name taken!");
@@ -48,6 +61,12 @@ public class Memory {
         vectors.add(new MemoryEntry<Vector>(label, data));
     }
 
+    /**
+     * Stores the provided constant in memory with the provided identifier.
+     * @param label The identifier for the constant.
+     * @param data  The constant.
+     * @throws IllegalArgumentException if the identifier provided is already taken.
+     */
     public static void store(String label, Double data) throws IllegalArgumentException {
         for(MemoryEntry<EntryType> entry : identifiers) {
             if(label.equals(entry.getLabel())) {
@@ -57,5 +76,49 @@ public class Memory {
 
         identifiers.add(new MemoryEntry<EntryType>(label, EntryType.CONSTANT));
         constants.add(new MemoryEntry<Double>(label, data));
+    }
+
+    /**
+     * Gets the type of data associated with the provided label.
+     * @param label The identifier of the variable to search for.
+     * @return The entry type of the variable. NULL if the variable does not exist.
+     */
+    public static EntryType retrieveType(String label) {
+        for(MemoryEntry<EntryType> entry : identifiers) {
+            if(entry.getLabel() == label) {
+                return entry.getData();
+            }
+        }
+        return EntryType.NULL;
+    }
+
+    public static Matrix retrieveMatrix(String label) {
+        for(MemoryEntry<Matrix> entry : matrices) {
+            if(entry.getLabel() == label) {
+                return entry.getData();
+            }
+        }
+
+        return null;
+    }
+
+    public static Vector retrieveVector(String label) {
+        for(MemoryEntry<Vector> entry : vectors) {
+            if(entry.getLabel() == label) {
+                return entry.getData();
+            }
+        }
+
+        return null;
+    }
+
+    public static double retrieveConstant(String label) {
+        for(MemoryEntry<Double> entry : constants) {
+            if(entry.getLabel() == label) {
+                return entry.getData();
+            }
+        }
+
+        return 0;
     }
 }
