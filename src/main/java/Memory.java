@@ -121,4 +121,72 @@ public class Memory {
 
         return 0;
     }
+
+    public static void free(String label) {
+        MemoryEntry<EntryType> toRemove = null;
+
+        for(MemoryEntry<EntryType> entry : identifiers) {
+            if(label.equals(entry.getLabel())) {
+                switch(entry.getData()) {
+                    case MATRIX:
+                        freeMatrix(label);
+                        toRemove = entry;
+                        break;
+                    case VECTOR:
+                        freeVector(label);
+                        toRemove = entry;
+                        break;
+                    case CONSTANT:
+                        freeConstant(label);
+                        toRemove = entry;
+                        break;
+                }
+            }
+        }
+
+        if(toRemove != null) {
+            System.out.println("Identifier removed: " + toRemove.getLabel());
+            identifiers.remove(toRemove);
+        }
+    }
+
+/****************************************************************/
+/*                        Helper methods                        */
+/****************************************************************/
+
+    private static void freeMatrix(String label) {
+        MemoryEntry<Matrix> toRemove = null;
+        for(MemoryEntry<Matrix> mat : matrices) {
+            if(mat.getLabel() == label) {
+                toRemove = mat;
+                break;
+            }
+        }
+
+        matrices.remove(toRemove);
+    }
+
+    private static void freeVector(String label) {
+        MemoryEntry<Vector> toRemove = null;
+        for(MemoryEntry<Vector> vec : vectors) {
+            if(vec.getLabel() == label) {
+                toRemove = vec;
+                break;
+            }
+        }
+
+        vectors.remove(toRemove);
+    }
+
+    private static void freeConstant(String label) {
+        MemoryEntry<Double> toRemove = null;
+        for(MemoryEntry<Double> con : constants) {
+            if(con.getLabel() == label) {
+                toRemove = con;
+                break;
+            }
+        }
+
+        constants.remove(toRemove);
+    }
 }
